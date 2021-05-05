@@ -15,8 +15,8 @@ sudo apt-get -y install mysql-server
 
 echo "------------------ Creating WordPress Database ------------------"
 mysql_password='QpWo#2LuQ'
-debconf-set-selections <<< "mysql-server mysql-server/root_password password $mysql_password"
-debconf-set-selections <<< "mysql-server mysql-server/root_password_again password $mysql_password"
+debconf-set-selections <<< "mysql-server mysql-server/root_password password ${mysql_password}"
+debconf-set-selections <<< "mysql-server mysql-server/root_password_again password ${mysql_password}"
 
 sudo mysql -u root -p$mysql_password < /vagrant/wordpress_db.sql
 
@@ -37,7 +37,7 @@ cp /vagrant/ssl-params.conf /etc/nginx/snippets/
 echo "------------------ Creating WordPress Nginx Directory ------------------"
 WP_DIR=/var/www/wordpress
 if [ ! -d "$WP_DIR" ]; then
-    sudo mkdir $WP_DIR
+    sudo mkdir ${WP_DIR}
 fi
 
 echo "------------------ Copying Nginx Configuration ------------------"
@@ -56,15 +56,15 @@ echo "------------------ Downloading WordPress ------------------"
 cd /tmp
 WP_FILE=wordpress-5.7.1.tar.gz
 if [[ ! -f "$FILE" ]]; then
-    curl -LO https://wordpress.org/$WP_FILE
+    curl -LO https://wordpress.org/${WP_FILE}
 fi
 
 echo "------------------ Extracting WordPress ------------------"
-tar xzvf $WP_FILE
-sudo cp -a /tmp/wordpress/. $WP_DIR
+tar xzvf ${WP_FILE}
+sudo cp -a /tmp/wordpress/. ${WP_DIR}
 
 echo "------------------ Setting Up Privileges ------------------"
-sudo chown -R www-data:www-data $WP_DIR
+sudo chown -R www-data:www-data ${WP_DIR}
 
 echo "------------------ Copying WordPress PHP Configuration ------------------"
 cp /vagrant/wp-config.php /var/www/wordpress/wp-config.php
